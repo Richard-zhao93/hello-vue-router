@@ -1,8 +1,10 @@
 /*
  * @path: src/hello-vue-router/create-route-map.js
- * @Description: 路由匹配器Matcher对象生成方法
+ * @Description: 路由匹配器 Matcher 对象生成方法
  */
 import { createRouteMap } from "./create-route-map";
+// 导入route对象创建方法
+import { createRoute } from "./utils/route";
 
 export function createMatcher(routes) {
   // 生成路由映射对象 pathMap
@@ -28,7 +30,8 @@ export function createMatcher(routes) {
   // 路由匹配
   function match(location) {
     location = typeof location === "string" ? { path: location } : location;
-    return pathMap[location.path];
+    // return pathMap[location.path];
+    return createRoute(pathMap[location.path], location); // 修改
   }
 
   return {

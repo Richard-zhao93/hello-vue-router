@@ -40,6 +40,26 @@ export default class VueRouter {
         }
     }
   }
+
+  // 匹配路由
+  match(location) {
+    return this.matcher.match(location);
+  }
+
+  // 获取所有活跃的路由记录列表
+  getRoutes() {
+    return this.matcher.getRoutes();
+  }
+
+  // 动态添加路由（添加一条新路由规则）
+  addRoute(parentOrRoute, route) {
+    this.matcher.addRoute(parentOrRoute, route);
+  }
+
+  // 动态添加路由（参数必须是一个符合 routes 选项要求的数组）
+  addRoutes(routes) {
+    this.matcher.addRoutes(routes);
+  }
 }
 
 VueRouter.install = install;
