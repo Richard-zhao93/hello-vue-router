@@ -22,7 +22,13 @@ export function install(Vue) {
         this._routerRoot = this;
         // 在 Vue 根实例添加 _router 属性 （VueRouter 实例）
         this._router = this.$options.router;
-        this._route = {};
+
+        // 调用 VueRouter 实例初始化方法
+        // _router 即 VueRouter 实例，此处 this 即 Vue 根实例
+        this._router.init(this);
+
+        // this._route = {}; old
+        this._route = this._router.history.current; // new
       } else {
         //为每个组件实例定义 _routerRoot ，回溯查找 _routerRoot
         this._routerRoot = (this.$parent && this.$parent._routerRoot) || this;

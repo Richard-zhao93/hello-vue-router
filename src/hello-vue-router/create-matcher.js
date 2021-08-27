@@ -4,7 +4,7 @@
  */
 import { createRouteMap } from "./create-route-map";
 // 导入route对象创建方法
-import { createRoute } from "./utils/route";
+import { createRoute } from "./utils/createRoute";
 
 export function createMatcher(routes) {
   // 生成路由映射对象 pathMap

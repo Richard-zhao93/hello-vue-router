@@ -7,6 +7,9 @@ import { createMatcher } from "./create-matcher";
 import { HashHistory } from "./history/hash";
 import { HTML5History } from "./history/html5";
 import { AbstractHistory } from "./history/abstract";
+// 新增START对象导入
+import { START } from "./utils/createRoute";
+
 const inBrowser = typeof window !== "undefined";
 
 export default class VueRouter {
@@ -41,6 +44,22 @@ export default class VueRouter {
     }
   }
 
+  init(app) {
+    // 绑定 destroyed hook，避免内存泄露
+    app.$once("hook:destroyed", () => {
+      this.app = null;
+
+      if (!this.app) this.history.teardown();
+    });
+
+    // 存在即不需要重复监听路由
+    if (this.app) return;
+    this.app = app;
+
+    // 启动监听
+    this.history.setupListeners();
+  }
+
   // 匹配路由
   match(location) {
     return this.matcher.match(location);
@@ -54,11 +73,39 @@ export default class VueRouter {
   // 动态添加路由（添加一条新路由规则）
   addRoute(parentOrRoute, route) {
     this.matcher.addRoute(parentOrRoute, route);
+    // 新增
+    if (this.history.current !== START) {
+      this.history.transitionTo(this.history.getCurrentLocation());
+    }
   }
 
   // 动态添加路由（参数必须是一个符合 routes 选项要求的数组）
   addRoutes(routes) {
     this.matcher.addRoutes(routes);
+    // 新增
+    if (this.history.current !== START) {
+      this.history.transitionTo(this.history.getCurrentLocation());
+    }
+  }
+
+  // 导航到新url，向 history栈添加一条新访问记录
+  push(location) {
+    this.history.push(location);
+  }
+
+  // 在 history 记录中向前或者后退多少步
+  go(n) {
+    this.history.go(n);
+  }
+
+  // 导航到新url，替换 history 栈中当前记录
+  replace(location, onComplete) {
+    this.history.replace(location, onComplete);
+  }
+
+  // 导航回退一步
+  back() {
+    this.history.go(-1);
   }
 }
 

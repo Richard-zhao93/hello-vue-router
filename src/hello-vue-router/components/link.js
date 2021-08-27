@@ -17,6 +17,13 @@ export default {
     let data = {
       attrs: {
         href: router.mode === "hash" ? "#" + href : href
+      },
+      // 新增
+      on: {
+        click: e => {
+          e.preventDefault();
+          router.push(href);
+        }
       }
     };
 

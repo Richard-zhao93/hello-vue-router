@@ -3,7 +3,7 @@
  * @Description: 路由模式父类
  */
 // 导入初始化route对象
-import { START } from "../utils/route";
+import { START } from "../utils/createRoute";
 
 export class History {
   constructor(router) {
@@ -20,7 +20,7 @@ export class History {
   setupListeners() {}
 
   // 路由跳转
-  transitionTo(location) {
+  transitionTo(location, onComplete) {
     // 路由匹配，解析 location 匹配到其路由对应的数据对象
     let route = this.router.matcher(location);
 
